@@ -32,6 +32,29 @@ def load_imtraj_training_data(event_name, fold):
     return X, y
 
 
+def load_asrbof_training_data(event_name, fold):
+    event_train_list = open("/home/ubuntu/hw3/list/{0}_train_{1}".format(event_name, fold))
+    X = []
+    y = []
+    for line in event_train_list:
+        video, label = line.split()
+        x = [0 for i in range(12760)]
+        try:
+            with open("/home/ubuntu/hw3/asr_bof/{0}.bof".format(video)) as f:
+                line = f.readline()
+                items = line.split()
+                for item in items:
+                    idx, v = item.split(':')
+                    x[int(idx) - 1] = float(v)
+        except IOError:
+            print ">> {0}'s asr_bof feature deos not exist!".format(video)
+
+        X.append(x)
+        y.append(label)
+
+    return X, y
+
+
 def load_training_data(event_name, feat_file_path, fold):
     """
     Load training data and labels for a event
@@ -78,14 +101,17 @@ def main():
     parser.add_argument("--kernel", "-k", help="kernel for the svm",
                         choices=["linear", "poly", "rbf"], default='linear')
     parser.add_argument("--gamma", "-g", help="gamma for rbf and sigmoid kernel", type=float)
-    parser.add_argument("--feat_type", "-f", choices=["sift", "imtraj", "cnn"], default="sift")
+    parser.add_argument("--feat_type", "-f", choices=["sift", "imtraj", "cnn", "asr"], default="sift")
     args = parser.parse_args()
 
     # load training data
-    if args.feat_type != "imtraj":
-        X, y = load_training_data(args.event_name, args.feat_file, args.fold)
-    else:
+    if args.feat_type == "imtraj":
         X, y = load_imtraj_training_data(args.event_name, args.fold)
+    elif args.feat_type == "asr":
+        X, y = load_asrbof_training_data(args.event_name, args.fold)
+    else:
+        X, y = load_training_data(args.event_name, args.feat_file, args.fold)
+
 
     # train SVM
     print ">> training SVM with {0} kernel on {1} samples".format(args.kernel, len(y))

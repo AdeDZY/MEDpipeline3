@@ -30,6 +30,26 @@ def load_imtraj_test_data(fold):
 
     return X
 
+def load_asrbof_test_data(fold):
+    test_list = open("/home/ubuntu/hw3/list/test_{0}.video".format(fold))
+    X = []
+    y = []
+    for line in test_list:
+        video = line.strip()
+        x = [0 for i in range(12760)]
+        try:
+            with open("/home/ubuntu/hw3/asr_bof/{0}.bof".format(video)) as f:
+                line = f.readline()
+                items = line.split()
+                for item in items:
+                    idx, v = item.split(':')
+                    x[int(idx) - 1] = float(v)
+        except IOError:
+            print ">> {0}'s asr_bof feature does not exist!".format(video)
+
+        X.append(x)
+
+    return X
 
 def load_test_data(feat_file_path, feat_dim, fold):
     """
@@ -68,7 +88,7 @@ def main():
     parser.add_argument("feat_file", help="feature file")
     parser.add_argument("feat_dim", type=int, help="dimension of features")
     parser.add_argument("output_file", help="path to save the prediction score")
-    parser.add_argument("--feat_type", "-f", choices=["sift", "imtraj", "cnn"], default="sift")
+    parser.add_argument("--feat_type", "-f", choices=["sift", "imtraj", "cnn", "asr"], default="sift")
     args = parser.parse_args()
 
     # load model
@@ -76,10 +96,13 @@ def main():
     print clf.get_params()
 
     # load data
-    if args.feat_type != 'imtraj':
-        X = load_test_data(args.feat_file, args.feat_dim, args.fold)
-    else:
+    if args.feat_type == 'imtraj':
         X = load_imtraj_test_data(args.fold)
+    elif args.feat_type == 'asr':
+        X = load_asrbof_test_data(args.fold)
+    else:
+        X = load_test_data(args.feat_file, args.feat_dim, args.fold)
+
 
     # predict with the log probability
     print ">> Predicting..."
