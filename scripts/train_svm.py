@@ -9,15 +9,15 @@ import sys
 import argparse
 
 
-def load_imtraj_training_data(event_name):
-    event_train_list = open("/home/ubuntu/hw1/list/{0}_train".format(event_name))
+def load_imtraj_training_data(event_name, fold):
+    event_train_list = open("/home/ubuntu/hw3/list/{0}_train_{1}".format(event_name, fold))
     X = []
     y = []
     for line in event_train_list:
         video, label = line.split()
         x = [0 for i in range(32768)]
         try:
-            with open("/home/ubuntu/hw2/imtraj/{0}.spbof".format(video)) as f:
+            with open("/home/ubuntu/hw3/imtraj/{0}.spbof".format(video)) as f:
                 line = f.readline()
                 items = line.split()
                 for item in items:
@@ -32,7 +32,7 @@ def load_imtraj_training_data(event_name):
     return X, y
 
 
-def load_training_data(event_name, feat_file_path):
+def load_training_data(event_name, feat_file_path, fold):
     """
     Load training data and labels for a event
     :param event_name: str. e.g. P001
@@ -42,7 +42,7 @@ def load_training_data(event_name, feat_file_path):
     X is the training feature vectors. shape=(n_sample, n_feat)
     y is the training labels. shape=(1, n_sample)
     """
-    event_train_list = open("/home/ubuntu/hw1/list/{0}_train".format(event_name))
+    event_train_list = open("/home/ubuntu/hw3/list/{0}_train_{1}".format(event_name, fold))
     video2label = {}
     for line in event_train_list:
         video, label = line.split()
@@ -71,6 +71,7 @@ def load_training_data(event_name, feat_file_path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("event_name", help="name of the event (P001, P002 or P003 in Homework 1)")
+    parser.add_argument("fold", help="fold 1,2,3, 0==all", type=int)
     parser.add_argument("feat_file", help="dir of feature files")
     parser.add_argument("feat_dim", help="dimension of features")
     parser.add_argument("output_file", help="path to save the svm model")
@@ -82,9 +83,9 @@ def main():
 
     # load training data
     if args.feat_type != "imtraj":
-        X, y = load_training_data(args.event_name, args.feat_file)
+        X, y = load_training_data(args.event_name, args.feat_file, args.fold)
     else:
-        X, y = load_imtraj_training_data(args.event_name)
+        X, y = load_imtraj_training_data(args.event_name, args.fold)
 
     # train SVM
     print ">> training SVM with {0} kernel on {1} samples".format(args.kernel, len(y))

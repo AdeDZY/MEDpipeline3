@@ -23,15 +23,25 @@ def main():
         for idx in test_idxes:
             fo.write(videos[idx] + '\n')
         fo.close()
+        
+        for p in range(3):
+            fo = open("/home/ubuntu/hw3/list/P00{1}_train_{0}".format(i + 1, p + 1), 'w')
+            for idx in train_idxes:
+                if lables[idx] == "P00{0}".format(p + 1):
+                    fo.write(videos[idx] + ' ' + lables[idx] + '\n')
+                else:
+                    fo.write(videos[idx] + ' NULL\n')
+            fo.close()
 
         for p in range(3):
             fo = open("/home/ubuntu/hw3/list/P00{1}_test_{0}".format(i + 1, p + 1), 'w')
             for idx in test_idxes:
-                if lables == "P00{0}".format(p + 1):
+                if lables[idx] == "P00{0}".format(p + 1):
                     fo.write('1\n')
                 else:
                     fo.write('0\n')
             fo.close()
+        i += 1
 
 
 if __name__ == '__main__':
