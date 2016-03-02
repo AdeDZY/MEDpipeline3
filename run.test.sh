@@ -27,3 +27,23 @@ for i in {1..3}; do
 ../hw1/mAP/ap list/P00${i}_test_${k} imtraj_pred/P00${i}_${k}.pred >> log
 done;
 done
+
+# asr rbf 
+#g=(0.0000001 0.0000001 0.0000001)
+#for k in {1..3};do
+#for i in {1..3}; do
+#./scripts/train_svm.py P00${i} ${k} asr_bof 12760 asr_pred/P00${i}_${k}.model -f asr -k rbf -g ${g[i-1]} 
+#./scripts/test_svm.py asr_pred/P00${i}_${k}.model ${k} asr_bof 12760 asr_pred/P00${i}_${k}.pred -f asr 
+#../hw1/mAP/ap list/P00${i}_test_${k} asr_pred/P00${i}_${k}.pred >> log
+#done;
+#done
+
+
+#g=(0.0001 0.00005 0.001)
+#for k in {1..3};do
+#for i in {1..3};do
+#./scripts/train_svm.py P00${i} ${k} mfcc/all.vectors 200 mfcc_bow_pred/P00${i}_${k}.model -k rbf -g ${g[i-1]} 
+#./scripts/test_svm.py mfcc_bow_pred/P00${i}_${k}.model ${k} mfcc/all.vectors 200 mfcc_bow_pred/P00${i}_${k}.pred
+#../hw1/mAP/ap list/P00${i}_test_${k} mfcc_bow_pred/P00${i}_${k}.pred >> log2
+#done;
+#done

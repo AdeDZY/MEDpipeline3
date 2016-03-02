@@ -45,6 +45,8 @@ def load_asrbof_training_data(event_name, fold):
                 items = line.split()
                 for item in items:
                     idx, v = item.split(':')
+                    if idx > 12760:
+                        continue
                     x[int(idx) - 1] = float(v)
         except IOError:
             print ">> {0}'s asr_bof feature deos not exist!".format(video)

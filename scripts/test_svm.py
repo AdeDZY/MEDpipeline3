@@ -43,6 +43,8 @@ def load_asrbof_test_data(fold):
                 items = line.split()
                 for item in items:
                     idx, v = item.split(':')
+                    if idx > 12760:
+                        continue
                     x[int(idx) - 1] = float(v)
         except IOError:
             print ">> {0}'s asr_bof feature does not exist!".format(video)
