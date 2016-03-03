@@ -44,11 +44,11 @@ def main():
 
         for p in range(3):
             fo = open("/home/ubuntu/hw3/list/P00{1}_train".format(i + 1, p + 1), 'w')
-            for idx in len(videos):
+            for idx in range(len(videos)):
                 if lables[idx] == "P00{0}".format(p + 1):
-                    fo.write('1\n')
+                    fo.write(videos[idx] + ' ' + lables[idx] + '\n')
                 else:
-                    fo.write('0\n')
+                    fo.write(videos[idx] + ' NULL\n')
             fo.close()
         i += 1
 

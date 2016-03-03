@@ -68,7 +68,10 @@ def load_test_data(feat_file_path, feat_dim, fold):
     Each line represents a video. Line starts with video_name, than a '\t', than the feature vector
     :return: X, the test feature vectors. shape=(n_sample, n_feat)
     """
-    test_list = open("/home/ubuntu/hw3/list/test_{0}.video".format(fold))
+    if fold != 0:
+        test_list = open("/home/ubuntu/hw3/list/test_{0}.video".format(fold))
+    else:
+        test_list = open("/home/ubuntu/hw3/list/test.video")
     videos = {}
     for line in test_list:
         video = line.strip()
@@ -102,7 +105,7 @@ def main():
     args = parser.parse_args()
 
     # load model
-    clf, scaler = cPickle.load(open(args.model_file, 'rb'))
+    clf = cPickle.load(open(args.model_file, 'rb'))
     print clf.get_params()
 
     # load data
@@ -116,6 +119,7 @@ def main():
 
     # predict with the log probability
     print ">> Predicting..."
+    scaler = StandardScaler()
     X = scaler.fit_transform(X)
     T = clf.decision_function(X)
 

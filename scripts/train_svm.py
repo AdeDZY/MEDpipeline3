@@ -74,7 +74,10 @@ def load_training_data(event_name, feat_file_path, fold):
     X is the training feature vectors. shape=(n_sample, n_feat)
     y is the training labels. shape=(1, n_sample)
     """
-    event_train_list = open("/home/ubuntu/hw3/list/{0}_train_{1}".format(event_name, fold))
+    if fold == 0:
+        event_train_list = open("/home/ubuntu/hw3/list/{0}_train".format(event_name))
+    else:
+        event_train_list = open("/home/ubuntu/hw3/list/{0}_train_{1}".format(event_name, fold))
     video2label = {}
     for line in event_train_list:
         video, label = line.split()
@@ -136,7 +139,7 @@ def main():
 
     # save the trained model
     outfile = open(args.output_file, 'wb')
-    cPickle.dump((clf, scaler), outfile)
+    cPickle.dump(clf, outfile)
     print ">> model saved to {0}!".format(args.output_file)
 
 if __name__ == '__main__':
