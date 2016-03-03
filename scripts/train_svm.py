@@ -10,7 +10,10 @@ import argparse
 
 
 def load_imtraj_training_data(event_name, fold):
-    event_train_list = open("/home/ubuntu/hw3/list/{0}_train_{1}".format(event_name, fold))
+    if fold == 0:
+        event_train_list = open("/home/ubuntu/hw3/list/{0}_train".format(event_name, fold))
+    else:
+        event_train_list = open("/home/ubuntu/hw3/list/{0}_train_{1}".format(event_name, fold))
     X = []
     y = []
     for line in event_train_list:
@@ -33,7 +36,10 @@ def load_imtraj_training_data(event_name, fold):
 
 
 def load_asrbof_training_data(event_name, fold):
-    event_train_list = open("/home/ubuntu/hw3/list/{0}_train_{1}".format(event_name, fold))
+    if fold == 0:
+        event_train_list = open("/home/ubuntu/hw3/list/{0}_train".format(event_name, fold))
+    else:
+        event_train_list = open("/home/ubuntu/hw3/list/{0}_train_{1}".format(event_name, fold))
     X = []
     y = []
     for line in event_train_list:
