@@ -20,13 +20,13 @@
 #done
 
 # Imtraj linear 
-for k in {1..3};do
-for i in {1..3}; do
-./scripts/train_svm.py P00${i} ${k} imtraj 32748 imtraj_pred/P00${i}_${k}.model -f imtraj 
-./scripts/test_svm.py imtraj_pred/P00${i}_${k}.model ${k} imtraj 32748 imtraj_pred/P00${i}_${k}.pred -f imtraj
-../hw1/mAP/ap list/P00${i}_test_${k} imtraj_pred/P00${i}_${k}.pred >> log
-done;
-done
+#for k in {1..3};do
+#for i in {1..3}; do
+#./scripts/train_svm.py P00${i} ${k} imtraj 32748 imtraj_pred/P00${i}_${k}.model -f imtraj 
+#./scripts/test_svm.py imtraj_pred/P00${i}_${k}.model ${k} imtraj 32748 imtraj_pred/P00${i}_${k}.pred -f imtraj
+#../hw1/mAP/ap list/P00${i}_test_${k} imtraj_pred/P00${i}_${k}.pred >> log
+#done;
+#done
 
 # asr rbf 
 #g=(0.0000001 0.0000001 0.0000001)
@@ -47,3 +47,11 @@ done
 #../hw1/mAP/ap list/P00${i}_test_${k} mfcc_bow_pred/P00${i}_${k}.pred >> log2
 #done;
 #done
+g=(0.001 0.0005 0.001)
+for k in {1..3};do
+for i in {1..3};do
+./scripts/train_svm.py P00${i} ${k} all_early.vectors 200 early_pred/P00${i}_${k}.model -k rbf -g ${g[i-1]} 
+./scripts/test_svm.py early_pred/P00${i}_${k}.model ${k} all_early.vectors 200 early_pred/P00${i}_${k}.pred
+../hw1/mAP/ap list/P00${i}_test_${k} early_pred/P00${i}_${k}.pred >> log
+done;
+done

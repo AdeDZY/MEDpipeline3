@@ -12,7 +12,7 @@ import argparse
 def get_feat(output_file):
     f1 = open("/home/ubuntu/hw3/siftbow_features/all_avg.vectors")
     f2 = open("/home/ubuntu/hw3/cnn_fc7_features/all_avg.vectors")
-    f3 = open("/home/ubuntu/hw3/mfcc_bow_pred/P00${i}_${k}.model")
+    f3 = open("/home/ubuntu/hw3/mfcc/all.vectors")
     fo = open(output_file, 'w')
     while True:
         line1 = f1.readline().strip()
