@@ -32,8 +32,9 @@ def load_imtraj_training_data(event_name, fold):
 
         X.append(x)
         y.append(label)
+        scaler = StandardScaler()
 
-    return X, y
+    return scaler.fit_transform(X), y
 
 
 def load_asrbof_training_data(event_name, fold):

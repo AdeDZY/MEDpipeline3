@@ -7,6 +7,8 @@ from sklearn.svm.classes import SVC
 import cPickle
 import sys
 import argparse
+from sklearn.preprocessing import StandardScaler
+
 
 
 def load_imtraj_test_data(fold):
@@ -30,8 +32,9 @@ def load_imtraj_test_data(fold):
             print ">> {0}'s imtraj feature does not exist!".format(video)
 
         X.append(x)
+        scaler = StandardScaler()
 
-    return X
+    return scaler.fit_transform(X)
 
 
 def load_asrbof_test_data(fold):
@@ -57,8 +60,9 @@ def load_asrbof_test_data(fold):
             print ">> {0}'s asr_bof feature does not exist!".format(video)
 
         X.append(x)
+        scaler = StandardScaler()
 
-    return X
+    return scaler.fit_transform(X)
 
 def load_test_data(feat_file_path, feat_dim, fold):
     """
@@ -86,8 +90,9 @@ def load_test_data(feat_file_path, feat_dim, fold):
 
         x = [float(t) for t in feats.split(';')]
         X.append(x)
+        scaler = StandardScaler()
 
-    return X
+    return scaler.fit_transform(X)
 
 
 def main():
