@@ -60,8 +60,9 @@ def load_asrbof_training_data(event_name, fold):
 
         X.append(x)
         y.append(label)
+        scaler = StandardScaler()
 
-    return StandardScaler(X), y
+    return scaler.fit_transform(X), y
 
 
 def load_training_data(event_name, feat_file_path, fold):
@@ -95,8 +96,9 @@ def load_training_data(event_name, feat_file_path, fold):
         X.append(x)
 
         y.append(video2label[video])
+        scaler = StandardScaler()
 
-    return StandardScaler(X), y
+    return scaler.fit_transform(X), y
 
 
 # Performs K-means clustering and save the model to a local file
