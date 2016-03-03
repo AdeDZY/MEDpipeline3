@@ -7,6 +7,7 @@ from sklearn import svm
 import cPickle
 import sys
 import argparse
+from sklearn.preprocessing import StandardScaler
 
 
 def load_imtraj_training_data(event_name, fold):
@@ -60,7 +61,7 @@ def load_asrbof_training_data(event_name, fold):
         X.append(x)
         y.append(label)
 
-    return X, y
+    return StandardScaler(X), y
 
 
 def load_training_data(event_name, feat_file_path, fold):
@@ -95,7 +96,7 @@ def load_training_data(event_name, feat_file_path, fold):
 
         y.append(video2label[video])
 
-    return X, y
+    return StandardScaler(X), y
 
 
 # Performs K-means clustering and save the model to a local file
