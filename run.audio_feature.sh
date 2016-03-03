@@ -38,15 +38,15 @@ done
 # In this part, we train a clustering model to cluster the MFCC vectors. In order to speed up the clustering process, we
 # select a small portion of the MFCC vectors. In the following example, we only select 20% randomly from each video. 
 echo "Pooling MFCCs (optional)"
-#python scripts/select_frames.py list/train.video 0.2 select.mfcc.csv || exit 1;
+python scripts/select_frames.py list/train.video 0.02 select.mfcc.csv || exit 1;
 
 # now trains a k-means model using the sklearn package
 echo "Training the k-means model"
-#python scripts/train_kmeans.py select.mfcc.csv $cluster_num kmeans.${cluster_num}.model || exit 1;
+python scripts/train_kmeans.py select.mfcc.csv $cluster_num mfcc.kmeans${cluster_num}.model || exit 1;
 
 # Now that we have the k-means model, we can represent a whole video with the histogram of its MFCC vectors over the clusters. 
 # Each video is represented by a single vector which has the same dimension as the number of clusters. 
 echo "Creating k-means cluster vectors"
-#python scripts/create_kmeans.py kmeans.${cluster_num}.model $cluster_num list/all.video || exit 1;
+python scripts/create_mfcc_kmeans.py mfcc.kmeans${cluster_num}.model $cluster_num list/all.video || exit 1;
 
 echo "SUCCESSFUL COMPLETION"
