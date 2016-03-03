@@ -10,7 +10,10 @@ import argparse
 
 
 def load_imtraj_test_data(fold):
-    test_list = open("/home/ubuntu/hw3/list/test_{0}.video".format(fold))
+    if fold != 0:
+        test_list = open("/home/ubuntu/hw3/list/test_{0}.video".format(fold))
+    else:
+        test_list = open("/home/ubuntu/hw3/list/test.video")
     X = []
     y = []
     for line in test_list:
@@ -30,9 +33,12 @@ def load_imtraj_test_data(fold):
 
     return X
 
+
 def load_asrbof_test_data(fold):
-    test_list = open("/home/ubuntu/hw3/list/test_{0}.video".format(fold))
-    X = []
+    if fold != 0:
+        test_list = open("/home/ubuntu/hw3/list/test_{0}.video".format(fold))
+    else:
+        test_list = open("/home/ubuntu/hw3/list/test.video")    X = []
     y = []
     for line in test_list:
         video = line.strip()
