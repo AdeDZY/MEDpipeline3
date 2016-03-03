@@ -10,7 +10,6 @@ import argparse
 from sklearn.preprocessing import StandardScaler
 
 
-
 def load_imtraj_test_data(fold):
     if fold != 0:
         test_list = open("/home/ubuntu/hw3/list/test_{0}.video".format(fold))
@@ -32,9 +31,8 @@ def load_imtraj_test_data(fold):
             print ">> {0}'s imtraj feature does not exist!".format(video)
 
         X.append(x)
-        scaler = StandardScaler()
 
-    return scaler.fit_transform(X)
+    return X
 
 
 def load_asrbof_test_data(fold):
@@ -60,9 +58,8 @@ def load_asrbof_test_data(fold):
             print ">> {0}'s asr_bof feature does not exist!".format(video)
 
         X.append(x)
-        scaler = StandardScaler()
 
-    return scaler.fit_transform(X)
+    return X
 
 def load_test_data(feat_file_path, feat_dim, fold):
     """
@@ -90,9 +87,8 @@ def load_test_data(feat_file_path, feat_dim, fold):
 
         x = [float(t) for t in feats.split(';')]
         X.append(x)
-        scaler = StandardScaler()
 
-    return scaler.fit_transform(X)
+    return X
 
 
 def main():
@@ -106,7 +102,7 @@ def main():
     args = parser.parse_args()
 
     # load model
-    clf = cPickle.load(open(args.model_file, 'rb'))
+    clf, scaler = cPickle.load(open(args.model_file, 'rb'))
     print clf.get_params()
 
     # load data
@@ -120,6 +116,7 @@ def main():
 
     # predict with the log probability
     print ">> Predicting..."
+    X = scaler.fit_transform(X)
     T = clf.decision_function(X)
 
     # write results

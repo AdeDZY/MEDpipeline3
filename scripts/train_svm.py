@@ -32,9 +32,8 @@ def load_imtraj_training_data(event_name, fold):
 
         X.append(x)
         y.append(label)
-        scaler = StandardScaler()
 
-    return scaler.fit_transform(X), y
+    return X, y
 
 
 def load_asrbof_training_data(event_name, fold):
@@ -61,9 +60,8 @@ def load_asrbof_training_data(event_name, fold):
 
         X.append(x)
         y.append(label)
-        scaler = StandardScaler()
 
-    return scaler.fit_transform(X), y
+    return X, y
 
 
 def load_training_data(event_name, feat_file_path, fold):
@@ -97,9 +95,8 @@ def load_training_data(event_name, feat_file_path, fold):
         X.append(x)
 
         y.append(video2label[video])
-        scaler = StandardScaler()
 
-    return scaler.fit_transform(X), y
+    return X, y
 
 
 # Performs K-means clustering and save the model to a local file
@@ -131,12 +128,15 @@ def main():
         clf = svm.SVC(kernel=args.kernel, class_weight='balanced', gamma=args.gamma)
     else:
         clf = svm.SVC(kernel=args.kernel, class_weight='balanced')
+
+    scaler = StandardScaler()
+    X = scaler.fit_transform(X)
     clf.fit(X, y)
     #print clf.coef_
 
     # save the trained model
     outfile = open(args.output_file, 'wb')
-    cPickle.dump(clf,outfile)
+    cPickle.dump((clf, scaler), outfile)
     print ">> model saved to {0}!".format(args.output_file)
 
 if __name__ == '__main__':
