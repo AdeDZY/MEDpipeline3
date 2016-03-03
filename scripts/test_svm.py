@@ -38,7 +38,8 @@ def load_asrbof_test_data(fold):
     if fold != 0:
         test_list = open("/home/ubuntu/hw3/list/test_{0}.video".format(fold))
     else:
-        test_list = open("/home/ubuntu/hw3/list/test.video")    X = []
+        test_list = open("/home/ubuntu/hw3/list/test.video")
+    X = []
     y = []
     for line in test_list:
         video = line.strip()
